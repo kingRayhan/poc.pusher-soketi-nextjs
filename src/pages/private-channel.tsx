@@ -13,17 +13,14 @@ const PrivateChannel: NextPage = () => {
   const { pusher } = useContext(AppContext);
   useEffect(() => {
     const channel = pusher.subscribe("private-demo_channel");
-
     channel.bind("demo_event", function (data) {
       setMessages((prev) => [data, ...prev]);
     });
-
     channel.bind("pusher:subscription_succeeded", function (members) {
       console.log("Successfully subscribed!");
       console.log("members:", members);
       setIsSubscribedSuccessfully(true);
     });
-
     channel.bind("pusher:subscription_error", function (error) {
       console.log("Unable to subscribe to channel");
       console.log(error);

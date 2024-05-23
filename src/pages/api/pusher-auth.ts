@@ -1,21 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import Pusher from "pusher";
+import { pusherServerConfig } from "../../pusher.config";
 
-const pusher = new Pusher({
-  appId: "1486630",
-  key: "06d21999dd24676c7d71",
-  secret: "43db56edd06769a7e048",
-  cluster: "ap2",
-  useTLS: true,
-});
+const pusher = new Pusher(pusherServerConfig);
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
   // get body
-  const body = req.body;
+  const body = req.query;
   const socket_id = body.socket_id;
   const channel_name = body.channel_name;
 
@@ -25,12 +20,18 @@ export default function handler(
     });
   }
 
-  const authResponse = pusher.authorizeChannel(socket_id, channel_name, {
-    user_id: req.cookies.userId,
-    user_info: {
-      nickName: req.cookies.nickName,
-    },
-  });
+  console.log("pusher-auth-payload", { socket_id, channel_name });
+
+  const authResponse = pusher.authorizeChannel(
+    socket_id as string,
+    channel_name as string,
+    {
+      user_id: req.cookies.userId,
+      user_info: {
+        nickName: req.cookies.nickName,
+      },
+    }
+  );
 
   res.status(200).json(authResponse);
 }

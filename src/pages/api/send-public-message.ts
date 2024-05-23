@@ -1,13 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Pusher from "pusher";
+import { pusherServerConfig } from "../../pusher.config";
 
-const pusher = new Pusher({
-  appId: "1486630",
-  key: "06d21999dd24676c7d71",
-  secret: "43db56edd06769a7e048",
-  cluster: "ap2",
-  useTLS: true,
-});
+const pusher = new Pusher(pusherServerConfig);
 
 export default function handler(
   req: NextApiRequest,

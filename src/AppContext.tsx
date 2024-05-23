@@ -1,5 +1,6 @@
 import Pusher from "pusher-js";
 import React, { PropsWithChildren } from "react";
+import { pusherClientConfig } from "./pusher.config";
 
 interface AppContextProps {
   pusher: Pusher;
@@ -11,13 +12,7 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   let pusher: Pusher;
 
   if (typeof window !== "undefined") {
-    pusher = new Pusher("06d21999dd24676c7d71", {
-      cluster: "ap2",
-      channelAuthorization: {
-        endpoint: "/api/pusher-auth",
-        transport: "ajax",
-      },
-    });
+    pusher = new Pusher(pusherClientConfig.appId, pusherClientConfig.options);
   }
 
   return (
