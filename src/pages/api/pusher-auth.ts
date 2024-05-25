@@ -10,9 +10,13 @@ export default function handler(
   res: NextApiResponse<any>
 ) {
   // get body
-  const body = req.query;
+  const body = req.body;
   const socket_id = body.socket_id;
   const channel_name = body.channel_name;
+
+  console.log({
+    body,
+  });
 
   if (!req.cookies.userId || !req.cookies.nickName) {
     return res.status(401).json({
@@ -20,18 +24,12 @@ export default function handler(
     });
   }
 
-  console.log("pusher-auth-payload", { socket_id, channel_name });
-
-  const authResponse = pusher.authorizeChannel(
-    socket_id as string,
-    channel_name as string,
-    {
-      user_id: req.cookies.userId,
-      user_info: {
-        nickName: req.cookies.nickName,
-      },
-    }
-  );
+  const authResponse = pusher.authorizeChannel(socket_id, channel_name, {
+    user_id: req.cookies.userId,
+    user_info: {
+      nickName: req.cookies.nickName,
+    },
+  });
 
   res.status(200).json(authResponse);
 }

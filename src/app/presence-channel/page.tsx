@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../AppContext";
+import { AppContext } from "../../AppContext";
 
 const PresenceChannel = () => {
   const [isSubscribedSuccessfully, setIsSubscribedSuccessfully] =
@@ -7,36 +9,36 @@ const PresenceChannel = () => {
   const [subscriptionError, setSubscriptionError] = useState<any>(null);
 
   const [count, setCount] = React.useState(0);
-  const [users, setUsers] = React.useState([]);
+  const [users, setUsers] = React.useState<any[]>([]);
   const { pusher } = useContext(AppContext);
 
   useEffect(() => {
-    const channel = pusher.subscribe("presence-online-users");
+    const channel = pusher?.subscribe("presence-online-users");
 
-    channel.bind("pusher:subscription_succeeded", (members: any) => {
+    channel?.bind("pusher:subscription_succeeded", (members: any) => {
       setCount(members.count);
       setUsers(Object.keys(members.members).map((key) => members.members[key]));
     });
 
-    channel.bind("pusher:member_added", (member: any) => {
+    channel?.bind("pusher:member_added", (member: any) => {
       setCount((count) => count + 1);
       setUsers((prev) => [...prev, member.info]);
     });
 
-    channel.bind("pusher:member_removed", (member: any) => {
+    channel?.bind("pusher:member_removed", (member: any) => {
       setCount((count) => count - 1);
       setUsers((prev) =>
         prev.filter((user) => user.nickName !== member.info.nickName)
       );
     });
 
-    channel.bind("pusher:subscription_succeeded", function (members) {
+    channel?.bind("pusher:subscription_succeeded", function (members: any) {
       console.log("Successfully subscribed!");
       console.log("members:", members);
       setIsSubscribedSuccessfully(true);
     });
 
-    channel.bind("pusher:subscription_error", function (error) {
+    channel?.bind("pusher:subscription_error", function (error: any) {
       console.log("Unable to subscribe to channel");
       console.log(error);
       setSubscriptionError(error);

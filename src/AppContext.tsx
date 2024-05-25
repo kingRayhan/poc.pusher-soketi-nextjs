@@ -1,22 +1,27 @@
+"use client";
+
 import Pusher from "pusher-js";
 import React, { PropsWithChildren } from "react";
 import { pusherClientConfig } from "./pusher.config";
 
 interface AppContextProps {
-  pusher: Pusher;
+  pusher?: Pusher;
 }
 
-export const AppContext = React.createContext<AppContextProps>(null);
+export const AppContext = React.createContext<AppContextProps>({});
 
 const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  let pusher: Pusher;
-
-  if (typeof window !== "undefined") {
-    pusher = new Pusher(pusherClientConfig.appId, pusherClientConfig.options);
-  }
-
   return (
-    <AppContext.Provider value={{ pusher }}>{children}</AppContext.Provider>
+    <AppContext.Provider
+      value={{
+        pusher: new Pusher(
+          pusherClientConfig.appId,
+          pusherClientConfig.options
+        ),
+      }}
+    >
+      {children}
+    </AppContext.Provider>
   );
 };
 

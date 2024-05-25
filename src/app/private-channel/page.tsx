@@ -1,41 +1,42 @@
-import axios from "axios";
+"use client";
+
 import { NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../AppContext";
+import { FormEvent, useContext, useEffect, useState } from "react";
+import { AppContext } from "../../AppContext";
+import axios from "axios";
 
 const PrivateChannel: NextPage = () => {
   const [isSubscribedSuccessfully, setIsSubscribedSuccessfully] =
     useState<boolean>(false);
   const [subscriptionError, setSubscriptionError] = useState<any>(null);
 
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [messages, setMessages] = useState<any[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
   const { pusher } = useContext(AppContext);
   useEffect(() => {
-    const channel = pusher.subscribe("private-demo_channel");
-    channel.bind("demo_event", function (data) {
+    const channel = pusher?.subscribe("private-demo_channel");
+    channel?.bind("demo_event", function (data: any) {
       setMessages((prev) => [data, ...prev]);
     });
-    channel.bind("pusher:subscription_succeeded", function (members) {
+    channel?.bind("pusher:subscription_succeeded", function (members: any) {
       console.log("Successfully subscribed!");
       console.log("members:", members);
       setIsSubscribedSuccessfully(true);
     });
-    channel.bind("pusher:subscription_error", function (error) {
+
+    channel?.bind("pusher:subscription_error", function (error: any) {
       console.log("Unable to subscribe to channel");
-      console.log(error);
+      console.log("pusher:subscription_error", error);
       setSubscriptionError(error);
     });
   }, [pusher]);
 
-  const handleSendPublicMesaage = (e) => {
+  const handleSendPublicMesaage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newMessage) return;
     axios
       .post("/api/send-private-message", { message: newMessage })
-      .then(() => {
-        setNewMessage("");
-      });
+      .then(() => setNewMessage(""));
   };
 
   return (

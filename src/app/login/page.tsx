@@ -1,8 +1,10 @@
+"use client";
+
 import { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface IFormInput {
   nickName: string;

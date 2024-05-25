@@ -1,6 +1,34 @@
 import { Options as PusherClientOptions } from "pusher-js";
+import { Options as PusherServerConfig } from "pusher";
 
 // #### React pusher client config
+
+// const SOKETI_HOST: string = "socket.techdiary.dev";
+const SOKETI_HOST: string = "watch.notarylab.dev";
+const SOKETI_PORT: number = 443;
+const SOKETI_DEFAULT_APP_ID = "notary";
+const SOKETI_DEFAULT_APP_KEY = "6zMr9RGT8";
+const SOKETI_DEFAULT_APP_SECRET = "E8q6%Yhv4w8Fi2h";
+
+// #### Soketi pusher client config
+export const pusherClientConfig = {
+  appId: SOKETI_DEFAULT_APP_KEY,
+  options: {
+    wsHost: SOKETI_HOST,
+    wssHost: SOKETI_HOST,
+    wssPort: SOKETI_PORT,
+    wsPort: SOKETI_PORT,
+    cluster: "",
+    forceTLS: true,
+    disableStats: true,
+    enabledTransports: ["wss", "ws"],
+    channelAuthorization: {
+      endpoint: "/api/pusher-auth",
+      transport: "ajax",
+    },
+  } as PusherClientOptions,
+};
+
 // export const pusherClientConfig = {
 //   appId: "06d21999dd24676c7d71",
 //   options: {
@@ -9,28 +37,8 @@ import { Options as PusherClientOptions } from "pusher-js";
 //       endpoint: "/api/pusher-auth",
 //       transport: "ajax",
 //     },
-//   } satisfies PusherClientOptions,
+//   } as PusherClientOptions,
 // };
-
-const SOKETI_HOST = "3.226.47.246";
-const SOKETI_PORT = 6001;
-
-// #### Soketi pusher client config
-export const pusherClientConfig = {
-  appId: "app-key",
-  options: {
-    wsHost: SOKETI_HOST,
-    cluster: "ap2",
-    wsPort: 6001,
-    forceTLS: false,
-    disableStats: true,
-    enabledTransports: ["ws", "wss"],
-    channelAuthorization: {
-      endpoint: "/api/pusher-auth",
-      transport: "jsonp",
-    },
-  } as PusherClientOptions,
-};
 
 // #### React pusher server config
 // export const pusherServerConfig = {
@@ -45,9 +53,15 @@ export const pusherClientConfig = {
 export const pusherServerConfig = {
   host: SOKETI_HOST,
   port: SOKETI_PORT,
-  appId: "app-id",
-  key: "app-key",
-  secret: "app-secret",
-  cluster: "ap2",
-  useTLS: false,
-};
+  scheme: "https",
+  useTLS: true,
+  appId: SOKETI_DEFAULT_APP_ID,
+  key: SOKETI_DEFAULT_APP_KEY,
+  secret: SOKETI_DEFAULT_APP_SECRET,
+  cluster: "",
+  auth: {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  },
+} as PusherServerConfig;
