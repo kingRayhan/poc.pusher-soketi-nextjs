@@ -1,5 +1,22 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Pusher Configuration
+
+Copy `.env.example` to `.env.local` and set your Pusher credentials:
+
+```bash
+cp .env.example .env.local
+```
+
+Required variables:
+
+- `PUSHER_APP_ID`
+- `PUSHER_KEY`
+- `PUSHER_SECRET`
+- `PUSHER_CLUSTER`
+- `NEXT_PUBLIC_PUSHER_KEY`
+- `NEXT_PUBLIC_PUSHER_CLUSTER`
+
 ## Getting Started
 
 First, run the development server:
