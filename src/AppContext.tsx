@@ -2,7 +2,7 @@
 
 import Pusher from "pusher-js";
 import React, { PropsWithChildren } from "react";
-import { pusherClientConfig } from "./pusher.config";
+import { pusherClientConfig } from "./pusher.client.config";
 
 interface AppContextProps {
   pusher?: Pusher;
@@ -15,7 +15,7 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <AppContext.Provider
       value={{
         pusher: new Pusher(
-          pusherClientConfig.appId,
+          pusherClientConfig.key,
           pusherClientConfig.options
         ),
       }}

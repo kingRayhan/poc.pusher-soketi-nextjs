@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import Pusher from "pusher";
-import { pusherServerConfig } from "../../pusher.config";
+import { pusherServerConfig } from "../../pusher.server.config";
 
 const pusher = new Pusher(pusherServerConfig);
 
